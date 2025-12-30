@@ -4,7 +4,7 @@
 # Qualcomm/Xiaomi GPT Partition Table Recovery Tool
 # Optimized for Xiaomi Mi 4i (Ferrari) and similar platforms.
 #
-# Developed by: anonymous@zion
+# Developed by: Florin Mitroi aka digitart3.0@gmail.com
 # License: MIT License (https://opensource.org/licenses/MIT)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
