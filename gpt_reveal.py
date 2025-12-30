@@ -31,24 +31,18 @@ def clean_gpt(filename):
     print(f"{'ID':<4} {'Nombre':<15} {'Inicio LBA':<12} {'Fin LBA':<12} {'Tamaño':<10}")
     print("-" * 65)
 
-    # El offset 0xd00 fue donde empezó a salir todo perfecto en tu test
-    # Vamos a escanear desde ahí o buscar las entradas
     count = 0
     for i in range(0, len(data) - 128, 128):
-        # El truco para Xiaomi: si el nombre sale chino, 
-        # probamos a leer desde el byte 57 en lugar del 56
         name_data = data[i+56:i+128].split(b'\x00\x00\x00')[0]
         
-        # Intentamos decodificar y limpiar nulos internos
         try:
-            # Quitamos los bytes nulos que ensucian el UTF-16
             name = name_data.replace(b'\x00', b'').decode('ascii', errors='ignore').strip()
             
             if len(name) > 1 and name.isprintable():
                 start_lba = struct.unpack('<Q', data[i+32:i+40])[0]
                 end_lba = struct.unpack('<Q', data[i+40:i+48])[0]
                 
-                if 0 < start_lba < 0xFFFFFFFF: # Filtro de LBA razonable
+                if 0 < start_lba < 0xFFFFFFFF:
                     size_mb = ((end_lba - start_lba) + 1) * SECTOR_SIZE / (1024 * 1024)
                     print(f"{count:<4} {name:<15} {start_lba:<12} {end_lba:<12} {size_mb:>8.2f} MB")
                     count += 1
